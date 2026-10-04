@@ -9,8 +9,36 @@ FILE_DATABASE_LOKAL = "input_manual_unwinder.csv"
 st.set_page_config(
     page_title="Pencocokan Sparepart Unwinder",
     page_icon="⚙️",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
+
+# --- CSS RESPONSISTIF UNTUK LAYAR KECIL ---
+st.markdown("""
+    <style>
+        /* Mengurangi padding atas & samping agar area kerja lebih luas */
+        .block-container {
+            padding-top: 1.5rem !important;
+            padding-bottom: 2rem !important;
+            padding-left: 1.5rem !important;
+            padding-right: 1.5rem !important;
+            max-width: 100% !important;
+        }
+        /* Menyesuaikan ukuran font & padding input form di layar kecil */
+        .stTextInput > div > div > input, .stSelectbox > div > div {
+            font-size: 14px !important;
+        }
+        /* Mengatur agar tabel bisa di-scroll secara horizontal jika terlalu lebar */
+        .stDataFrame {
+            width: 100% !important;
+            overflow-x: auto !important;
+        }
+        /* Menyesuaikan jarak tombol */
+        .stButton button {
+            width: 100% !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # --- FUNGSI HELPER & CLEANSING DATA ---
 def bersihkan_teks(teks):
@@ -131,7 +159,8 @@ if menu == "1. Input & Cocokkan Data Unwinder":
     st.subheader("➕ Input Manual Sparepart Unwinder Harian")
     
     with st.form("form_input", clear_on_submit=True):
-        col1, col2 = st.columns(2)
+        # Menggunakan rasio kolom yang lebih adaptif untuk layar laptop kecil
+        col1, col2 = st.columns([1, 1])
         with col1:
             kode_raw = st.text_input("Kode / Material Code Sparepart *", placeholder="Contoh: 4008671 / 7004428200030")
             nama_raw = st.text_input("Nama Sparepart *", placeholder="Contoh: RELAY WEIDMULLER 1122880000 6MM 24VDC+RELAY")
@@ -236,7 +265,7 @@ elif menu == "2. Lihat & Edit Data Tersimpan":
         st.markdown("---")
         st.subheader("🗑️ Opsi Penghapusan Data")
         
-        col_hapus1, col_hapus2 = st.columns([3, 1])
+        col_hapus1, col_hapus2 = st.columns([2, 1])
         
         with col_hapus1:
             df_lokal['label_pilihan'] = df_lokal['kode'] + " - " + df_lokal['nama']
